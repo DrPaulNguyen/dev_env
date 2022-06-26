@@ -33,10 +33,10 @@ Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'Pocco81/AutoSave.nvim'
 Plug 'maxboisvert/vim-simple-complete'
 
-Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
-Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
+" Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
+" Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
 
-Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-lua/plenary.nvim'
 " Plug 'tanvirtin/vgit.nvim'
 Plug 'https://github.com/tpope/vim-fugitive'
 
