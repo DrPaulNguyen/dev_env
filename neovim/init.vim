@@ -6,7 +6,6 @@ set shiftwidth=2
 set smarttab
 set softtabstop=2
 set expandtab
-set hidden
 set mouse=a
 set cursorline
 set list listchars=trail:»,tab:»-
@@ -14,7 +13,6 @@ set fillchars+=vert:\
 set wrap breakindent
 set encoding=UTF-8
 
-set autoread
 set nowrap
 
 set foldmethod=indent
@@ -38,6 +36,9 @@ Plug 'maxboisvert/vim-simple-complete'
 Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
 Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
 
+Plug 'nvim-lua/plenary.nvim'
+" Plug 'tanvirtin/vgit.nvim'
+Plug 'https://github.com/tpope/vim-fugitive'
 
 call plug#end()
 
@@ -79,6 +80,7 @@ autosave.setup(
         debounce_delay = 135
     }
 )
+
 EOF
 
 let mapleader = "\\"
