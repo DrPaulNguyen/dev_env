@@ -1,5 +1,6 @@
 set number
 set relativenumber
+set termguicolors
 set autoindent
 set tabstop=2
 set shiftwidth=2
@@ -14,6 +15,8 @@ set wrap breakindent
 set encoding=UTF-8
 
 set nowrap
+set nohlsearch
+set smarttab
 
 set foldmethod=indent
 set foldlevel=4
@@ -25,20 +28,22 @@ Plug 'https://github.com/preservim/nerdtree' " NerdTree
 Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
 Plug 'https://github.com/vim-airline/vim-airline' " Status bar
 Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
-Plug 'https://github.com/solyarisoftware/nera.vim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'romgrk/barbar.nvim'
 Plug 'ryanoasis/vim-devicons'
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
-Plug 'Pocco81/AutoSave.nvim'
-Plug 'maxboisvert/vim-simple-complete'
+Plug 'seblj/nvim-tabline'
+Plug 'https://github.com/Yggdroot/indentLine'
 
-" Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
+Plug 'maxboisvert/vim-simple-complete'
+Plug 'lepture/vim-jinja'
+Plug 'https://github.com/solyarisoftware/nera.vim'
+Plug 'joanrivera/vim-highlight'
+
 " Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
 
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'tanvirtin/vgit.nvim'
 Plug 'https://github.com/tpope/vim-fugitive'
+Plug 'Pocco81/AutoSave.nvim'
+
+Plug 'ahmedkhalf/project.nvim'
 
 call plug#end()
 
@@ -51,8 +56,6 @@ au FileType php setl et ts=4 sw=4 sts=4
 au FileType jade setl noet ts=2 sw=2 sts=2
 au FileType haskell setl et ts=2 sw=2 sts=2
 au FileType sh setl et ts=2 sts=2 sw=2
-au FileType yaml setl ts=2 sts=2 sw=2 et
-au FileType vue setl ts=2 sts=2 sw=2 et
 au FileType yml setl ts=2 sts=2 sw=2 et
 au FileType haml setl ts=2 sts=2 sw=2 et
 au FileType pug setl ts=2 sts=2 sw=2 et
@@ -61,9 +64,8 @@ au FileType tex  setl mp=/usr/local/bin/pdflatex\ %
 au FileType st   setl ts=4 sts=4 sw=4 aw mp=gst\ % "noet
 
 lua << EOF
-local autosave = require("autosave")
 
-autosave.setup(
+require("autosave").setup(
     {
         enabled = true,
         execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
@@ -81,6 +83,24 @@ autosave.setup(
     }
 )
 
+require('tabline').setup({
+    no_name = '[No Name]',    -- Name for buffers with no name
+    modified_icon = '',      -- Icon for showing modified buffer
+    close_icon = '',         -- Icon for closing tab with mouse
+    separator = "▌",          -- Separator icon on the left side
+    padding = 3,              -- Prefix and suffix space
+    color_all_icons = false,  -- Color devicons in active and inactive tabs
+    right_separator = false,  -- Show right separator on the last tab
+    show_index = true,       -- Shows the index of tab before filename
+    show_icon = false,         -- Shows the devicon
+})
+
+require("project_nvim").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+}
+
 EOF
 
 let mapleader = "\\"
@@ -90,8 +110,6 @@ nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 
 let NERDTreeQuitOnOpen=1
-
-nmap <F8> :TagbarToggle<CR>
 
 :set completeopt-=preview " For No Previews
 
@@ -130,6 +148,22 @@ nnoremap <leader>8 8gt
 nnoremap <leader>9 9gt
 nnoremap <leader>0 :tablast<cr>
 
+nmap <leader>w :w!<cr>
+nmap <leader>q :q<cr>
+
+map <Enter> o<ESC>
+map <S-Enter> O<ESC>
+
+vnoremap <leader>y "+y
+
 set pastetoggle=<leader>p
 
-" set keymap=vietnamese-vni
+" Nera (RASA entity)
+vnoremap <C-r>t c[<C-R><C-O>"](type)<Esc>
+vnoremap <C-r>r c[<C-R><C-O>"](region)<Esc>
+vnoremap <C-r>w c[<C-R><C-O>"](ward)<Esc>
+vnoremap <C-r>s c[<C-R><C-O>"](street)<Esc>
+vnoremap <C-r>l c[<C-R><C-O>"](location)<Esc>
+vnoremap <C-r>z c[<C-R><C-O>"](size)<Esc>
+vnoremap <C-r>p c[<C-R><C-O>"](price)<Esc>
+
