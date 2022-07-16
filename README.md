@@ -11,3 +11,8 @@ adduser ubuntu sudo
 adduser ubuntu root
 adduser ubuntu docker
 ```
+## remove password for sudo
+
+visudo
+
+ubuntu ALL=(ALL) NOPASSWD: ALL
