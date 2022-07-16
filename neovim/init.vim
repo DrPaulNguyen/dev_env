@@ -24,6 +24,9 @@ set foldlevel=4
 call plug#begin()
 
 Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 Plug 'https://github.com/preservim/nerdtree' " NerdTree
 Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
 Plug 'https://github.com/vim-airline/vim-airline' " Status bar
@@ -38,12 +41,11 @@ Plug 'lepture/vim-jinja'
 Plug 'https://github.com/solyarisoftware/nera.vim'
 Plug 'joanrivera/vim-highlight'
 
-" Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
-
 Plug 'https://github.com/tpope/vim-fugitive'
 Plug 'Pocco81/AutoSave.nvim'
 
 Plug 'ahmedkhalf/project.nvim'
+Plug 'chrisbra/unicode.vim'
 
 call plug#end()
 
@@ -57,6 +59,7 @@ au FileType jade setl noet ts=2 sw=2 sts=2
 au FileType haskell setl et ts=2 sw=2 sts=2
 au FileType sh setl et ts=2 sts=2 sw=2
 au FileType yml setl ts=2 sts=2 sw=2 et
+au FileType yaml setl ts=2 sts=2 sw=2 et
 au FileType haml setl ts=2 sts=2 sw=2 et
 au FileType pug setl ts=2 sts=2 sw=2 et
 au FileType make setl noet
@@ -154,11 +157,40 @@ nmap <leader>q :q<cr>
 map <Enter> o<ESC>
 map <S-Enter> O<ESC>
 
-vnoremap <leader>y "+y
-
 set pastetoggle=<leader>p
 
+" Set key-mapping for dealing with two alphabetical registers easily
+vnoremap <Leader>a "ay
+vnoremap <Leader>A "Ay
+nnoremap <Leader>a "ap
+ 
+vnoremap <Leader>x "xy
+vnoremap <Leader>X "Xy
+nnoremap <Leader>x "xp
+
+
+" Move lines
+nnoremap <M-j> :m .+1<CR>==
+nnoremap <M-k> :m .-2<CR>==
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
+
+"Navigating in insert mode
+inoremap <M-t> <C-o>t
+inoremap <M-f> <C-o>f
+inoremap <M-d> <C-o>d
+
+
+"Inserting in insert mode
+inoremap <M-o> <C-o>o
+
+" Big QUIT
+inoremap <M-q> <Esc>:wq<CR>
+
 " Nera (RASA entity)
+vnoremap <C-r>a c[<C-R><C-O>"](act)<Esc>
 vnoremap <C-r>t c[<C-R><C-O>"](type)<Esc>
 vnoremap <C-r>r c[<C-R><C-O>"](region)<Esc>
 vnoremap <C-r>w c[<C-R><C-O>"](ward)<Esc>
