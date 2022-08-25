@@ -3,6 +3,12 @@ Development environment
 
 # System
 
+## bashrc
+
+```
+cp bashrc ~/.bashrc
+```
+
 ## add user
 
 ```
