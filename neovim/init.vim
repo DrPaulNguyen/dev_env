@@ -42,7 +42,7 @@ Plug 'https://github.com/solyarisoftware/nera.vim'
 Plug 'joanrivera/vim-highlight'
 
 Plug 'https://github.com/tpope/vim-fugitive'
-Plug 'Pocco81/AutoSave.nvim'
+Plug 'pocco81/auto-save.nvim'
 
 Plug 'ahmedkhalf/project.nvim'
 Plug 'chrisbra/unicode.vim'
@@ -67,24 +67,40 @@ au FileType tex  setl mp=/usr/local/bin/pdflatex\ %
 au FileType st   setl ts=4 sts=4 sw=4 aw mp=gst\ % "noet
 
 lua << EOF
+require("auto-save").setup({
+  enabled = true, -- start auto-save when the plugin is loaded (i.e. when your package manager loads it)
+  execution_message = {
+    message = function() -- message to print on save
+      return ("AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"))
+    end,
+    dim = 0.18, -- dim the color of `message`
+    cleaning_interval = 1250, -- (milliseconds) automatically clean MsgArea after displaying `message`. See :h MsgArea
+  },
+  trigger_events = {"InsertLeave", "TextChanged"}, -- vim events that trigger auto-save. See :h events
+  -- function that determines whether to save the current buffer or not
+  -- return true: if buffer is ok to be saved
+  -- return false: if it's not ok to be saved
+  condition = function(buf)
+    local fn = vim.fn
+    local utils = require("auto-save.utils.data")
 
-require("autosave").setup(
-    {
-        enabled = true,
-        execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
-        events = {"InsertLeave", "TextChanged"},
-        conditions = {
-            exists = true,
-            filename_is_not = {},
-            filetype_is_not = {},
-            modifiable = true
-        },
-        write_all_buffers = false,
-        on_off_commands = false,
-        clean_command_line_interval = 0,
-        debounce_delay = 135
-    }
-)
+    if
+      fn.getbufvar(buf, "&modifiable") == 1 and
+      utils.not_in(fn.getbufvar(buf, "&filetype"), {}) then
+      return true -- met condition(s), can save
+    end
+    return false -- can't save
+  end,
+  write_all_buffers = false, -- write all buffers when the current one meets `condition`
+  debounce_delay = 135, -- saves the file at most every `debounce_delay` milliseconds
+  callbacks = { -- functions to be executed at different intervals
+    enabling = nil, -- ran when enabling auto-save
+    disabling = nil, -- ran when disabling auto-save
+    before_asserting_save = nil, -- ran before checking `condition`
+    before_saving = nil, -- ran before doing the actual save
+    after_saving = nil -- ran after doing the actual save
+  }
+})
 
 require('tabline').setup({
     no_name = '[No Name]',    -- Name for buffers with no name
@@ -188,14 +204,4 @@ inoremap <M-o> <C-o>o
 
 " Big QUIT
 inoremap <M-q> <Esc>:wq<CR>
-
-" Nera (RASA entity)
-vnoremap <C-r>a c[<C-R><C-O>"](act)<Esc>
-vnoremap <C-r>t c[<C-R><C-O>"](type)<Esc>
-vnoremap <C-r>r c[<C-R><C-O>"](region)<Esc>
-vnoremap <C-r>w c[<C-R><C-O>"](ward)<Esc>
-vnoremap <C-r>s c[<C-R><C-O>"](street)<Esc>
-vnoremap <C-r>l c[<C-R><C-O>"](location)<Esc>
-vnoremap <C-r>z c[<C-R><C-O>"](size)<Esc>
-vnoremap <C-r>p c[<C-R><C-O>"](price)<Esc>
 
